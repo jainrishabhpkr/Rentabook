@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+{%extends 'base.html'%}
+{%load humanize%}
+{%block content%}
+<section id="showcase-inner" class="showcase-search text-white py-5">
+   <div class="container">
+     <div class="row text-center">
+       <div class="col-md-12">
+         <form action="{% url 'search'%}">
+           <!-- Form Row 1 -->
+           <div class="form-row">
+             <div class="col-md-4 mb-3">
+               <label class="sr-only">Keywords</label>
+               <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)">
+             </div>
+
+             <div class="col-md-4 mb-3">
+               <label class="sr-only">Author</label>
+               <input type="text" name="author" class="form-control" placeholder="author">
+             </div>
+
+             <div class="col-md-4 mb-3">
+               <label class="sr-only">Category</label>
+               <select name="category" class="form-control">
+                 <option selected="true" disabled="disabled">Category (All)</option>
+                 <option value="magic">magic</option>
+                 <option value="fantasy">fantasy</option>
+                 <option value="children">children</option>
+                 <option value="crime">crime</option>
+
+               </select>
+             </div>
+           </div>
+           <!-- Form Row 2 -->
+           <div class="form-row">
+             <div class="col-md-6 mb-3">
+               <label class="sr-only">Ratings</label>
+               <select name="ratings" class="form-control">
+                 <option selected="true" disabled="disabled">Ratings (Any)</option>
+                 <option value="1+">1+</option>
+                 <option value="2+">2+</option>
+                 <option value="3+">3+</option>
+                 <option value="4+">4+</option>
+                 <option value="5+">5+</option>
+                 <option value="6+">6+</option>
+                 <option value="7+">7+</option>
+                 <option value="8+">8+</option>
+                 <option value="9+">9+</option>
+               </select>
+             </div>
+             <div class="col-md-6 mb-3">
+               <select name="price" class="form-control">
+                 <option selected="true" disabled="disabled">Max Price (All)</option>
+                 <option value="100">Rs.100</option>
+                 <option value="200">Rs.200</option>
+                 <option value="300">Rs.300</option>
+                 <option value="400">Rs.400</option>
+                 <option value="500">Rs.500</option>
+                 <option value="600">Rs.600</option>
+                 <option value="700">Rs.700</option>
+                 <option value="800">Rs.800</option>
+                 <option value="900">Rs.900</option>
+                 <option value="1000">Rs.1000+</option>
+               </select>
+             </div>
+           </div>
+           <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+         </form>
+       </div>
+     </div>
+   </div>
+ </section>
+
+ <!-- Breadcrumb -->
+ <section id="bc" class="mt-3">
+   <div class="container">
+     <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item">
+           <a href="{%url 'index'%}">
+             <i class="fas fa-home"></i> Home</a>
+         </li>
+         <li class="breadcrumb-item">
+           <a href="{%url 'books'%}">Browse Books</a>
+         </li>
+         <li class="breadcrumb-item active"> Search Results</li>
+       </ol>
+     </nav>
+   </div>
+ </section>
+
+ <!-- Listings -->
+ <section id="listings" class="py-4">
+   <div class="container">
+     <div class="row">
+
+       <!-- Listing 1 -->
+
+       {%if books%}
+         {%for book  in books%}
+         <!-- Listing 1 -->
+
+         <div class="col-md-6 col-lg-4 mb-4">
+           <div class="card listing-preview">
+             <img class="card-img-top" src="{{book.photo.url}}" alt="">
+             <div class="card-img-overlay">
+               <h2>
+                 <span class="badge badge-secondary text-white">{{book.price|intcomma}}</span>
+               </h2>
+             </div>
+             <div class="card-body">
+               <div class="listing-heading text-center">
+                 <h4 class="text-primary">{{ book.title}}</h4>
+
+               </div>
+               <hr>
+               <div class="row py-2 text-secondary">
+                 <div class="col-6">
+                   <i class="fas fa-th-large"></i> Category: {{book.category}}</div>
+                 <div class="col-6">
+                   <i class="fas fa-car"></i> format: {{book.format}}</div>
+               </div>
+               <div class="row py-2 text-secondary">
+                 <div class="col-6">
+                   <i class="fas fa-bed"></i> Rating: {{book.Ratings}}</div>
+                 <div class="col-6">
+                   <i class="fas fa-bath"></i> Pages: {{book.no_of_pages}}</div>
+               </div>
+               <hr>
+               <div class="row py-2 text-secondary">
+                 <div class="col-12">
+                   <i class="fas fa-user"></i> {{book.author}}</div>
+               </div>
+               <div class="row text-secondary pb-2">
+                 <div class="col-6">
+                   <i class="fas fa-clock"></i> {{book.list_date|timesince}}</div>
+               </div>
+               <hr>
+               <a href="{% url 'book' book.id%}" class="btn btn-primary btn-block">More Info</a>
+             </div>
+           </div>
+         </div>
+
+
+         {%endfor%}
+       {%else%}
+       <div class="col-md-12">
+         <p>no latest books available</p>
+       </div>
+       {%endif%}
+
+
+     </div>
+   </div>
+ </section>
+
+{%endblock%}
